@@ -88,6 +88,50 @@ export default function Home() {
         'star-intensity': 0.6,
       })
 
+
+      // Abilene campus polygon - 5502 Spinks Rd, ~1000 acres
+      // Bounded by Spinks Rd (W), Summerhill Rd (N), approx 1000 acres
+      // Coordinates derived from address + acreage + satellite reference
+      m.addSource('abilene-polygon', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-99.8118, 32.5142],
+              [-99.7882, 32.5142],
+              [-99.7882, 32.4958],
+              [-99.8118, 32.4958],
+              [-99.8118, 32.5142],
+            ]]
+          },
+          properties: { site_id: 'LNC-002', name: 'Abilene Clean Campus' }
+        }
+      })
+
+      m.addLayer({
+        id: 'abilene-polygon-fill',
+        type: 'fill',
+        source: 'abilene-polygon',
+        paint: {
+          'fill-color': '#E8FF47',
+          'fill-opacity': 0.06,
+        }
+      })
+
+      m.addLayer({
+        id: 'abilene-polygon-border',
+        type: 'line',
+        source: 'abilene-polygon',
+        paint: {
+          'line-color': '#E8FF47',
+          'line-width': 1.5,
+          'line-opacity': 0.5,
+          'line-dasharray': [3, 2],
+        }
+      })
+
       m.addSource('lancium-sites', {
         type: 'geojson',
         data: buildGeoJSON(SITES, null),
