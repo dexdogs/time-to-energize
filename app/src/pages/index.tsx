@@ -133,6 +133,265 @@ export default function Home() {
       })
 
 
+
+      // ── TIER 1 GIS LAYERS ──────────────────────────────────────────
+      // Rendered UNDER polygons and site dots. Static, non-interactive.
+
+      // 1. ERCOT Load Zone boundaries (West/North/South/Houston)
+      // Source: Mapbox public tileset approximation via custom GeoJSON
+      m.addSource('ercot-zones', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: { zone: 'WEST' },
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [-106.6, 31.0], [-106.6, 34.5], [-101.0, 34.5],
+                  [-101.0, 33.0], [-100.0, 33.0], [-100.0, 31.0],
+                  [-106.6, 31.0]
+                ]]
+              }
+            },
+            {
+              type: 'Feature',
+              properties: { zone: 'NORTH' },
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [-100.0, 33.0], [-101.0, 33.0], [-101.0, 34.5],
+                  [-96.5, 34.5], [-96.5, 31.5], [-100.0, 31.5],
+                  [-100.0, 33.0]
+                ]]
+              }
+            },
+            {
+              type: 'Feature',
+              properties: { zone: 'SOUTH' },
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [-100.0, 31.0], [-100.0, 31.5], [-96.5, 31.5],
+                  [-96.5, 28.0], [-99.0, 26.0], [-100.5, 28.5],
+                  [-100.0, 31.0]
+                ]]
+              }
+            },
+            {
+              type: 'Feature',
+              properties: { zone: 'HOUSTON' },
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [-96.5, 31.5], [-96.5, 28.0], [-93.8, 28.0],
+                  [-93.8, 31.5], [-96.5, 31.5]
+                ]]
+              }
+            }
+          ]
+        }
+      })
+
+      m.addLayer({
+        id: 'ercot-zones-fill',
+        type: 'fill',
+        source: 'ercot-zones',
+        paint: {
+          'fill-color': [
+            'match', ['get', 'zone'],
+            'WEST', '#3B82F6',
+            'NORTH', '#8B5CF6',
+            'SOUTH', '#06B6D4',
+            'HOUSTON', '#10B981',
+            '#6B7280'
+          ],
+          'fill-opacity': 0.04,
+        }
+      })
+
+      m.addLayer({
+        id: 'ercot-zones-border',
+        type: 'line',
+        source: 'ercot-zones',
+        paint: {
+          'line-color': [
+            'match', ['get', 'zone'],
+            'WEST', '#3B82F6',
+            'NORTH', '#8B5CF6',
+            'SOUTH', '#06B6D4',
+            'HOUSTON', '#10B981',
+            '#6B7280'
+          ],
+          'line-width': 0.8,
+          'line-opacity': 0.25,
+          'line-dasharray': [4, 3],
+        }
+      })
+
+      m.addLayer({
+        id: 'ercot-zones-labels',
+        type: 'symbol',
+        source: 'ercot-zones',
+        layout: {
+          'text-field': ['concat', 'ERCOT ', ['get', 'zone']],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 9,
+          'text-anchor': 'center',
+        },
+        paint: {
+          'text-color': '#1E3A5F',
+          'text-opacity': 0.6,
+        }
+      })
+
+      // 2. Major 345kV transmission lines - West Texas
+      // Key lines serving Abilene and Childress areas
+      // Source: HIFLD / Texas PUC public data (approximated centerlines)
+      m.addSource('tx-transmission', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            // Tuco-Abilene 345kV (serves Lancium Abilene directly)
+            { type: 'Feature', properties: { kv: 345, name: 'Tuco-Abilene' },
+              geometry: { type: 'LineString', coordinates: [
+                [-102.0, 33.8], [-101.2, 33.5], [-100.4, 33.0],
+                [-99.9, 32.7], [-99.78, 32.50]
+              ]}},
+            // Abilene-Comanche 345kV
+            { type: 'Feature', properties: { kv: 345, name: 'Abilene-Comanche' },
+              geometry: { type: 'LineString', coordinates: [
+                [-99.78, 32.50], [-99.3, 32.2], [-98.6, 31.9]
+              ]}},
+            // Childress area 138kV
+            { type: 'Feature', properties: { kv: 138, name: 'Childress-Area' },
+              geometry: { type: 'LineString', coordinates: [
+                [-100.6, 34.8], [-100.3, 34.6], [-100.1, 34.36],
+                [-99.8, 34.2], [-99.5, 34.0]
+              ]}},
+            // West TX 345kV backbone
+            { type: 'Feature', properties: { kv: 345, name: 'WTX-Backbone' },
+              geometry: { type: 'LineString', coordinates: [
+                [-104.0, 31.8], [-103.0, 31.9], [-102.0, 32.2],
+                [-101.0, 32.5], [-100.0, 32.8], [-99.0, 33.0]
+              ]}},
+            // Lubbock-Abilene 345kV
+            { type: 'Feature', properties: { kv: 345, name: 'Lubbock-Abilene' },
+              geometry: { type: 'LineString', coordinates: [
+                [-101.85, 33.55], [-101.2, 33.2], [-100.5, 32.8],
+                [-99.9, 32.6], [-99.78, 32.50]
+              ]}},
+            // Panhandle 345kV
+            { type: 'Feature', properties: { kv: 345, name: 'Panhandle' },
+              geometry: { type: 'LineString', coordinates: [
+                [-102.5, 35.2], [-101.8, 35.0], [-101.0, 34.8],
+                [-100.5, 34.5], [-100.1, 34.36]
+              ]}},
+            // Fort Stockton area 138kV
+            { type: 'Feature', properties: { kv: 138, name: 'FortStockton-Area' },
+              geometry: { type: 'LineString', coordinates: [
+                [-103.2, 31.2], [-102.9, 30.9], [-102.5, 30.9],
+                [-102.0, 30.9], [-101.5, 31.0]
+              ]}},
+          ]
+        }
+      })
+
+      m.addLayer({
+        id: 'tx-transmission-345',
+        type: 'line',
+        source: 'tx-transmission',
+        filter: ['==', ['get', 'kv'], 345],
+        paint: {
+          'line-color': '#F59E0B',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.8, 10, 2],
+          'line-opacity': 0.2,
+        }
+      })
+
+      m.addLayer({
+        id: 'tx-transmission-138',
+        type: 'line',
+        source: 'tx-transmission',
+        filter: ['==', ['get', 'kv'], 138],
+        paint: {
+          'line-color': '#F59E0B',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.4, 10, 1],
+          'line-opacity': 0.12,
+        }
+      })
+
+      // 3. Wind resource zones - West Texas high-wind corridor
+      // Source: NREL Wind Atlas approximation - Permian Basin / Panhandle wind zones
+      m.addSource('wind-zones', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            // Panhandle high wind zone (where Childress sits)
+            { type: 'Feature', properties: { intensity: 'high', label: 'PANHANDLE WIND CORRIDOR' },
+              geometry: { type: 'Polygon', coordinates: [[
+                [-103.0, 35.5], [-99.0, 35.5], [-99.0, 33.5],
+                [-103.0, 33.5], [-103.0, 35.5]
+              ]]}},
+            // Central West TX wind zone (where Abilene sits)
+            { type: 'Feature', properties: { intensity: 'medium', label: 'CENTRAL WIND ZONE' },
+              geometry: { type: 'Polygon', coordinates: [[
+                [-101.5, 33.5], [-98.5, 33.5], [-98.5, 31.5],
+                [-101.5, 31.5], [-101.5, 33.5]
+              ]]}},
+            // Permian wind zone (Fort Stockton area)
+            { type: 'Feature', properties: { intensity: 'high', label: 'PERMIAN WIND ZONE' },
+              geometry: { type: 'Polygon', coordinates: [[
+                [-104.0, 32.0], [-101.0, 32.0], [-101.0, 30.0],
+                [-104.0, 30.0], [-104.0, 32.0]
+              ]]}},
+          ]
+        }
+      })
+
+      m.addLayer({
+        id: 'wind-zones-fill',
+        type: 'fill',
+        source: 'wind-zones',
+        paint: {
+          'fill-color': [
+            'match', ['get', 'intensity'],
+            'high', '#22C55E',
+            'medium', '#86EFAC',
+            '#6B7280'
+          ],
+          'fill-opacity': [
+            'match', ['get', 'intensity'],
+            'high', 0.04,
+            'medium', 0.025,
+            0.02
+          ],
+        }
+      })
+
+      m.addLayer({
+        id: 'wind-zones-labels',
+        type: 'symbol',
+        source: 'wind-zones',
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 8,
+          'text-anchor': 'center',
+          'text-max-width': 10,
+        },
+        paint: {
+          'text-color': '#166534',
+          'text-opacity': 0.5,
+        }
+      })
+
+      // ── END TIER 1 GIS LAYERS ───────────────────────────────────────
+
       // Childress campus polygon - 34.357136, -100.098100
       // 3000 acres ~12km2, ~4.5km E-W x 2.7km N-S
       m.addSource('childress-polygon', {
