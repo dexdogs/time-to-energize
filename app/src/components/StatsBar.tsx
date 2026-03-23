@@ -31,18 +31,16 @@ export default function StatsBar({ sites, tenants }: StatsBarProps) {
       bottom: 0,
       left: 0,
       right: 0,
-      zIndex: 20,
-      background: 'linear-gradient(0deg, rgba(10,15,30,1) 60%, rgba(10,15,30,0) 100%)',
-      paddingTop: '30px',
+      zIndex: 35,
+      background: 'rgba(10,15,30,0.98)',
+      borderTop: '1px solid #1E2D50',
     }}>
       <div style={{
         display: 'flex',
         overflowX: 'auto',
-        borderTop: '1px solid #1E2D50',
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       } as React.CSSProperties}>
         {stats.map((stat, i) => (
           <div key={stat.label} style={{

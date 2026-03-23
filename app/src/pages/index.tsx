@@ -208,7 +208,7 @@ export default function Home() {
         <ButtonBar />
         
         {!selectedSite && (
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <div style={{ position: "fixed", bottom: "100px", left: "50%", transform: "translateX(-50%)", zIndex: 19, pointerEvents: "none" }}>
             <div className="font-sans text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>
           </div>
         )}

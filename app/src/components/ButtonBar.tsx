@@ -45,7 +45,7 @@ export default function ButtonBar() {
 
   const popupStyle: React.CSSProperties = {
     position: 'absolute',
-    bottom: '38px',
+    bottom: '42px',
     background: 'rgba(10,15,30,0.97)',
     border: '1px solid #1E2D50',
     borderRadius: '4px',
@@ -58,7 +58,7 @@ export default function ButtonBar() {
   return (
     <div ref={ref} style={{
       position: 'fixed',
-      bottom: '60px',
+      bottom: '58px',
       left: '50%',
       transform: 'translateX(-50%)',
       zIndex: 30,

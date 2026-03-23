@@ -69,7 +69,7 @@ export default function Header({ selectedSiteId }: HeaderProps) {
       <div className="flex md:hidden" style={{
         overflowX: 'auto',
         borderTop: '1px solid #1E2D50',
-        padding: '6px 16px',
+        padding: '6px 16px 6px 12px',
         gap: '12px',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
