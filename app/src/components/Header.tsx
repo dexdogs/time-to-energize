@@ -25,10 +25,10 @@ export default function Header({ selectedSiteId }: HeaderProps) {
           </div>
           <div>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', color: '#E8FF47', textShadow: '0 0 20px rgba(232,255,71,0.5)', lineHeight: 1.2 }}>
-              TIME-TO-ENERGIZE
+              TIME-to-ENERGIZE
             </div>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '9px', color: '#4B5563', letterSpacing: '0.06em', lineHeight: 1.2 }}>
-              LANCIUM INTELLIGENCE // DEXDOGS
+              {'DATACENTER  DETECTIVE'}<em style={{fontStyle:'italic', fontFamily:"'Space Grotesk', sans-serif"}}>-GIRI</em>{' // dexdogs'}
             </div>
           </div>
         </div>
