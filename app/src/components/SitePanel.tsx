@@ -108,7 +108,7 @@ function TenantCard({ tenant }: { tenant: LanciumTenant }) {
 export default function SitePanel({ site, tenants, onClose }: SitePanelProps) {
   const statusColor = STATUS_COLORS[site.site_status]
   return (
-    <div className="absolute top-0 right-0 h-full w-full z-30 flex flex-col" style2="max-width: min(420px, 100vw)" style={{ background: 'linear-gradient(135deg, rgba(13,21,38,0.98) 0%, rgba(10,15,30,0.98) 100%)', borderLeft: `1px solid ${statusColor}30`, backdropFilter: 'blur(20px)', animation: 'slideIn 0.3s ease forwards', maxWidth: 'min(420px, 100vw)', width: '100%' }}>
+    <div className="absolute top-0 right-0 h-full w-full z-30 flex flex-col" style={{ background: 'linear-gradient(135deg, rgba(13,21,38,0.98) 0%, rgba(10,15,30,0.98) 100%)', borderLeft: `1px solid ${statusColor}30`, backdropFilter: 'blur(20px)', animation: 'slideIn 0.3s ease forwards', maxWidth: 'min(420px, 100vw)', width: '100%' }}>
       <div className="flex items-start justify-between p-5 border-b border-gray-800">
         <div>
           <div className="flex items-center gap-2 mb-1">
