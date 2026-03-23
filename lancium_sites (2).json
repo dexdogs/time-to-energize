@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --volt: #E8FF47;
+  --grid: #0A0F1E;
+  --grid-mid: #0D1526;
+  --grid-light: #111C35;
+  --grid-border: #1E2D50;
+  --confirmed: #22C55E;
+  --inferred: #F59E0B;
+  --missing: #6B7280;
+  --active: #E8FF47;
+  --in-development: #3B82F6;
+  --announced: #A855F7;
+  --speculative: #4B5563;
+  --probable: #06B6D4;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--grid);
+  color: #E2E8F0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Mapbox overrides */
+.mapboxgl-ctrl-logo,
+.mapboxgl-ctrl-attrib {
+  display: none !important;
+}
+
+.mapboxgl-popup-content {
+  background: var(--grid-mid) !important;
+  border: 1px solid var(--grid-border) !important;
+  border-radius: 4px !important;
+  padding: 0 !important;
+  box-shadow: 0 0 30px rgba(232, 255, 71, 0.1) !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--grid-border) !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--grid); }
+::-webkit-scrollbar-thumb { background: var(--grid-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--volt); }
+
+/* Confidence badges */
+.badge-confirmed { 
+  background: rgba(34, 197, 94, 0.15); 
+  color: var(--confirmed); 
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.badge-inferred { 
+  background: rgba(245, 158, 11, 0.15); 
+  color: var(--inferred); 
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.badge-missing { 
+  background: rgba(107, 114, 128, 0.15); 
+  color: var(--missing); 
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* Status dots */
+.status-operational { background: var(--active); box-shadow: 0 0 8px var(--active); }
+.status-in_development { background: var(--in-development); box-shadow: 0 0 8px var(--in-development); }
+.status-announced { background: var(--announced); box-shadow: 0 0 8px var(--announced); }
+.status-speculative { background: var(--speculative); }
+.status-unknown { background: var(--missing); }
+
+/* Pulse animation for active sites */
+@keyframes pulse-volt {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+
+.pulse-active {
+  animation: pulse-volt 2s ease-in-out infinite;
+}
+
+/* Timeline bar */
+.timeline-bar {
+  position: relative;
+  height: 4px;
+  background: var(--grid-border);
+  border-radius: 2px;
+  overflow: visible;
+}
+
+.timeline-fill {
+  position: absolute;
+  top: 0; left: 0; height: 100%;
+  background: linear-gradient(90deg, var(--volt), #9AFF47);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+/* Panel slide-in */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.panel-enter {
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Grid lines background texture */
+.grid-texture {
+  background-image: 
+    linear-gradient(rgba(30, 45, 80, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 45, 80, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glow effects */
+.glow-volt {
+  text-shadow: 0 0 20px rgba(232, 255, 71, 0.5);
+}
+
+.border-glow-volt {
+  box-shadow: 0 0 0 1px rgba(232, 255, 71, 0.3), inset 0 0 20px rgba(232, 255, 71, 0.05);
+}
