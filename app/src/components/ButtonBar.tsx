@@ -58,7 +58,7 @@ export default function ButtonBar() {
   return (
     <div ref={ref} style={{
       position: 'fixed',
-      bottom: '70px',
+      bottom: '80px',
       left: '50%',
       transform: 'translateX(-50%)',
       zIndex: 30,
