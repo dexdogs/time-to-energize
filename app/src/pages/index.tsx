@@ -5,6 +5,8 @@ import { getSites, getTenants, getTenantsForSite } from '@/lib/data'
 import { STATUS_COLORS, TENANT_STATUS_COLORS } from '@/lib/types'
 import type { LanciumSite, LanciumTenant } from '@/lib/types'
 import Header from '@/components/Header'
+import ExportButton from '@/components/ExportButton'
+import InfoPanel from '@/components/InfoPanel'
 import SitePanel from '@/components/SitePanel'
 import StatsBar from '@/components/StatsBar'
 
@@ -204,6 +206,8 @@ export default function Home() {
         <Header selectedSiteId={selectedSite?.site_id || null} />
         {selectedSite && <SitePanel site={selectedSite} tenants={selectedTenants} onClose={handleClose} />}
         {!selectedSite && <StatsBar sites={SITES} tenants={TENANTS} />}
+        <ExportButton />
+        <InfoPanel />
         {!selectedSite && (
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
             <div className="font-mono text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>

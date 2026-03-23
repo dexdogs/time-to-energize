@@ -1,0 +1,301 @@
+{
+  "schema_version": "1.1",
+  "generated": "2026-03-22",
+  "last_reviewed": "2026-03-22",
+  "review_notes": "v1.1 corrections: (1) Abilene acreage updated 800→1000 (inferred; TechRepublic cites 1400, using conservative confirmed figure). (2) BESS unit corrected MW→MWh; flagged as planning target not deployed. (3) Blackstone date confidence downgraded confirmed→inferred. (4) Expansion cancellation note added to LNC-002. (5) acreage_confidence column added. (6) behind_meter_bess field renamed to behind_meter_bess_mwh to correct unit error.",
+  "description": "Lancium Clean Campus sites dataset. Tracks all known, in-development, and rumored Lancium data center campus sites. Confidence levels: confirmed = primary source verified, inferred = derived from patterns/secondary sources, missing = no public data found.",
+  "sources": [
+    "Lancium press releases (lancium.com/newsroom)",
+    "ERCOT Large Load Integration documentation (ercot.com)",
+    "ERCOT-Lancium Patent License Agreement (April 2025)",
+    "City of Abilene / Taylor County public records (Dec 2021)",
+    "Childress County tax abatement approval (April 2025)",
+    "DCD, DataCenterFrontier, Baxtel reporting",
+    "Lancium ESIG presentation (May 2025)",
+    "SemiAnalysis Datacenter Industry Model",
+    "Crusoe press releases and DCD Global Awards (Dec 2025)",
+    "GE Vernova LM2500XPRESS Crusoe case study (gevernova.com)",
+    "Tom's Hardware - Oracle 1000-acre campus confirmation",
+    "TechRepublic - 1400-acre figure",
+    "DCD - Oracle/OpenAI expansion cancellation (Mar 2026)",
+    "DCD - NVIDIA $150M deposit / Meta lease talks (Mar 2026)"
+  ],
+  "sites": [
+    {
+      "site_id": "LNC-001",
+      "site_name": "Fort Stockton Clean Campus",
+      "location": {
+        "city": "Fort Stockton",
+        "county": "Pecos",
+        "state": "TX",
+        "lat": 30.8943,
+        "lon": -102.8793
+      },
+      "acreage": 110,
+      "acreage_confidence": "confirmed",
+      "capacity": {
+        "planned_mw": 325,
+        "operational_mw": 25,
+        "ercot_interconnect_approved_mw": 325,
+        "ercot_approval_status": "approved"
+      },
+      "site_status": "operational",
+      "timeline": {
+        "county_approval_date": "2021-09-15",
+        "groundbreak_date": "2021-09-15",
+        "first_tenant_arrival_date": null,
+        "first_energization_date": "2022-03-01",
+        "time_to_energize_days": null,
+        "time_to_energize_confidence": "inferred",
+        "time_to_energize_note": "Lancium was developer and operator simultaneously. No separate tenant arrival date. Time-to-energize metric not applicable in the same way as Abilene."
+      },
+      "power_infrastructure": {
+        "behind_meter_bess_mwh": 50,
+        "behind_meter_bess_mwh_confidence": "inferred",
+        "behind_meter_bess_note": "Planning target per Broad Reach Power agreement. Not confirmed deployed capacity.",
+        "behind_meter_solar_mw": 0,
+        "gas_turbine_bridge_mw": 0,
+        "primary_tsp": "Oncor",
+        "lancium_patent_clr_active": true
+      },
+      "environmental": {
+        "carbon_intensity_gco2_per_kwh": 350,
+        "carbon_intensity_confidence": "inferred",
+        "carbon_intensity_note": "ERCOT West zone average. Heavy wind mix. Fort Stockton sits near Permian Basin wind corridor.",
+        "water_usage_pue": 1.2,
+        "water_usage_pue_confidence": "inferred",
+        "water_usage_pue_note": "Air-cooled Bitcoin mining design. Pre-dates Lancium mandatory closed-loop cooling policy for AI campuses."
+      },
+      "financing": {
+        "blackstone_financed": false,
+        "blackstone_date_confidence": "missing",
+        "financing_amount_usd_m": 150,
+        "financing_confidence": "confirmed"
+      },
+      "data_confidence": "confirmed",
+      "notes": "First Lancium campus. Proof-of-concept for CLR model in ERCOT. Fort Stockton site qualified as Controllable Load Resource. Original use: Bitcoin mining + HPC. Expansion to 325MW underway. No major AI hyperscaler tenant announced as of March 2026."
+    },
+    {
+      "site_id": "LNC-002",
+      "site_name": "Abilene Clean Campus",
+      "location": {
+        "city": "Abilene",
+        "county": "Taylor",
+        "state": "TX",
+        "lat": 32.4901,
+        "lon": -99.7331
+      },
+      "acreage": 1000,
+      "acreage_confidence": "inferred",
+      "acreage_note": "Updated from 800 (original 2021 Taylor County filing) to 1000 per Oracle confirmation via Tom's Hardware. TechRepublic cites 1400 acres. Using 1000 as conservative confirmed figure. Campus has physically expanded since 2021 filing.",
+      "capacity": {
+        "planned_mw": 1200,
+        "operational_mw": 400,
+        "operational_mw_note": "400MW = total facility power draw for 2 live buildings. IT load is ~200MW+ per Crusoe press release. Both figures are in the right range; distinction between IT load and facility power flagged.",
+        "ercot_interconnect_approved_mw": 1200,
+        "ercot_approval_status": "approved"
+      },
+      "site_status": "operational",
+      "timeline": {
+        "county_approval_date": "2021-12-21",
+        "groundbreak_date": "2022-11-03",
+        "first_tenant_arrival_date": "2024-06-01",
+        "first_energization_date": "2025-09-30",
+        "time_to_energize_days": 1061,
+        "time_to_energize_confidence": "confirmed",
+        "time_to_energize_note": "1061 days = Lancium groundbreak (Nov 2022) to first live buildings (Sept 2025). Crusoe's construction-to-energize = ~15 months (June 2024 to Sept 2025). Both are valid framings of the metric."
+      },
+      "power_infrastructure": {
+        "behind_meter_bess_mwh": 4000,
+        "behind_meter_bess_mwh_confidence": "inferred",
+        "behind_meter_bess_note": "CORRECTION v1.1: Unit is MWh not MW (corrected from v1.0 error). 4000MWh is a planning target for the full 1.2GW buildout per Lancium ESIG presentation (May 2025). NOT confirmed deployed capacity. Among the largest BESS deployments in the world if fully realized.",
+        "behind_meter_solar_mw": 200,
+        "gas_turbine_bridge_mw": 975,
+        "gas_turbine_note": "29 GE Vernova LM2500XPRESS aeroderivative units x ~35MW each = ~975MW. Primary source: GE Vernova case study (gevernova.com/gas-power/resources/case-studies/crusoe-ai-data-centers-lm2500xpress). Units are 95% factory-assembled, can start independent of grid.",
+        "primary_tsp": "Oncor",
+        "lancium_patent_clr_active": true
+      },
+      "environmental": {
+        "carbon_intensity_gco2_per_kwh": 280,
+        "carbon_intensity_confidence": "inferred",
+        "carbon_intensity_note": "ERCOT West zone wind-heavy mix. Abilene described as one of windiest locations in Texas. 280 gCO2/kWh is an estimate for grid-sourced power; during gas bridge operation intensity could reach 450-500. Actual figure not published.",
+        "water_usage_pue": 1.15,
+        "water_usage_pue_confidence": "inferred",
+        "water_usage_pue_note": "Closed-loop liquid cooling (direct-to-chip, zero evaporation). Lancium mandates closed-loop at all AI campuses. 1.15 is an estimate; actual PUE not publicly disclosed."
+      },
+      "financing": {
+        "blackstone_financed": true,
+        "blackstone_date_confidence": "inferred",
+        "blackstone_note": "CORRECTION v1.1: Blackstone $500M investment reported by DCD (article dated Feb 2026). Exact close date not independently confirmed - downgraded from confirmed to inferred.",
+        "financing_amount_usd_m": 600,
+        "financing_confidence": "confirmed",
+        "financing_note": "$600M debt financing closed Oct 2025. Santander (underwriter/admin agent), Cantor Fitzgerald (strategic advisor). Round participants include SoftBank, OpenAI, Oracle, MGX."
+      },
+      "current_status_update": {
+        "as_of": "2026-03-22",
+        "update": "EXPANSION CANCELLED. Oracle and OpenAI cancelled plans to expand Abilene beyond 1.2GW per DCD reporting. NVIDIA paid $150M deposit to Crusoe to secure remaining capacity. NVIDIA in active talks with Meta to take the lease. The 1.2GW already contracted and operational is unaffected. See TNT-011 for Meta/NVIDIA probable tenant record.",
+        "confidence": "confirmed",
+        "source": "Data Center Dynamics, March 2026"
+      },
+      "data_confidence": "confirmed",
+      "notes": "Flagship campus. Stargate 1. Home of Crusoe/Oracle/OpenAI deployment. 8-building campus. Lancium owns land and electrical infrastructure. Crusoe owns and operates data center buildings. Oracle is direct customer. OpenAI is end user."
+    },
+    {
+      "site_id": "LNC-003",
+      "site_name": "Childress Clean Campus",
+      "location": {
+        "city": "Childress",
+        "county": "Childress",
+        "state": "TX",
+        "lat": 34.4268,
+        "lon": -100.2043
+      },
+      "acreage": 3000,
+      "acreage_confidence": "confirmed",
+      "capacity": {
+        "planned_mw": 2000,
+        "operational_mw": 0,
+        "ercot_interconnect_approved_mw": 1000,
+        "ercot_approval_status": "pending",
+        "capacity_confidence": "inferred",
+        "capacity_note": "3000 acres confirmed. 1GW+ referenced by DCD. Up to 10 facilities at $4B/site. 2GW estimate based on acreage and Lancium stated 1-5GW campus targets."
+      },
+      "site_status": "in_development",
+      "timeline": {
+        "county_approval_date": "2025-04-10",
+        "groundbreak_date": null,
+        "first_tenant_arrival_date": null,
+        "first_energization_date": null,
+        "time_to_energize_days": null,
+        "time_to_energize_confidence": "missing",
+        "forecast": {
+          "groundbreak_forecast": "2026-Q1 to 2026-Q2",
+          "tenant_announcement_forecast": "2026-Q4 to 2027-Q1",
+          "energization_forecast": "2028-mid",
+          "forecast_methodology": "Applied Abilene lag pattern to April 2025 county approval: county approval (Dec 2021) → groundbreak (Nov 2022, 11mo) → tenant (June 2024, 19mo after groundbreak) → energization (Sept 2025, 15mo after tenant). Note: Meta taking Abilene remaining capacity could delay or accelerate Childress depending on whether Meta wants more sites."
+        }
+      },
+      "power_infrastructure": {
+        "behind_meter_bess_mwh": 500,
+        "behind_meter_bess_mwh_confidence": "inferred",
+        "behind_meter_bess_note": "Planning estimate only. Not operational.",
+        "behind_meter_solar_mw": 300,
+        "gas_turbine_bridge_mw": null,
+        "primary_tsp": "Oncor",
+        "lancium_patent_clr_active": true
+      },
+      "environmental": {
+        "carbon_intensity_gco2_per_kwh": null,
+        "carbon_intensity_confidence": "missing",
+        "water_usage_pue": null,
+        "water_usage_pue_confidence": "missing",
+        "note": "Not operational. Childress County is in the Texas Panhandle with significant wind resources."
+      },
+      "financing": {
+        "blackstone_financed": true,
+        "blackstone_date_confidence": "inferred",
+        "financing_amount_usd_m": null,
+        "financing_confidence": "inferred",
+        "financing_note": "Blackstone $500M Lancium investment broadly reported. Childress-specific financing not separately disclosed."
+      },
+      "data_confidence": "confirmed",
+      "notes": "County approval + tax abatements confirmed April 2025. Follows Abilene playbook. No tenant announced as of March 2026. Up to 10 facilities planned. Next major Lancium catalyst to watch."
+    },
+    {
+      "site_id": "LNC-004",
+      "site_name": "Undisclosed Site A",
+      "location": {
+        "city": "West Texas",
+        "county": "Unknown",
+        "state": "TX",
+        "lat": 31.5,
+        "lon": -101.5,
+        "location_confidence": "inferred",
+        "location_note": "Approximate centroid for West Texas ERCOT zone. Actual location unknown."
+      },
+      "acreage": null,
+      "acreage_confidence": "missing",
+      "capacity": {
+        "planned_mw": null,
+        "operational_mw": 0,
+        "ercot_interconnect_approved_mw": null,
+        "ercot_approval_status": "unknown"
+      },
+      "site_status": "unknown",
+      "timeline": {
+        "county_approval_date": null,
+        "groundbreak_date": null,
+        "first_tenant_arrival_date": null,
+        "first_energization_date": null,
+        "time_to_energize_days": null,
+        "time_to_energize_confidence": "missing"
+      },
+      "power_infrastructure": {
+        "primary_tsp": "Unknown",
+        "lancium_patent_clr_active": true
+      },
+      "environmental": {
+        "carbon_intensity_gco2_per_kwh": null,
+        "carbon_intensity_confidence": "missing",
+        "water_usage_pue": null,
+        "water_usage_pue_confidence": "missing"
+      },
+      "financing": {
+        "blackstone_financed": false,
+        "blackstone_date_confidence": "missing",
+        "financing_amount_usd_m": null,
+        "financing_confidence": "missing"
+      },
+      "data_confidence": "missing",
+      "notes": "Referenced in Lancium 2022 investor materials as one of 5 West Texas sites totaling 6.1GW. All fields missing."
+    },
+    {
+      "site_id": "LNC-005",
+      "site_name": "Undisclosed Site B",
+      "location": {
+        "city": "West Texas",
+        "county": "Unknown",
+        "state": "TX",
+        "lat": 31.8,
+        "lon": -102.1,
+        "location_confidence": "inferred",
+        "location_note": "Approximate. Actual location unknown."
+      },
+      "acreage": null,
+      "acreage_confidence": "missing",
+      "capacity": {
+        "planned_mw": null,
+        "operational_mw": 0,
+        "ercot_interconnect_approved_mw": null,
+        "ercot_approval_status": "unknown"
+      },
+      "site_status": "unknown",
+      "timeline": {
+        "county_approval_date": null,
+        "groundbreak_date": null,
+        "first_tenant_arrival_date": null,
+        "first_energization_date": null,
+        "time_to_energize_days": null,
+        "time_to_energize_confidence": "missing"
+      },
+      "power_infrastructure": {
+        "primary_tsp": "Unknown",
+        "lancium_patent_clr_active": true
+      },
+      "environmental": {
+        "carbon_intensity_gco2_per_kwh": null,
+        "carbon_intensity_confidence": "missing",
+        "water_usage_pue": null,
+        "water_usage_pue_confidence": "missing"
+      },
+      "financing": {
+        "blackstone_financed": false,
+        "blackstone_date_confidence": "missing",
+        "financing_amount_usd_m": null,
+        "financing_confidence": "missing"
+      },
+      "data_confidence": "missing",
+      "notes": "Referenced in Lancium 2022 investor materials as one of 5 West Texas sites totaling 6.1GW. All fields missing."
+    }
+  ]
+}
