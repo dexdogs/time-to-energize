@@ -8,12 +8,12 @@ import Header from '@/components/Header'
 import SitePanel from '@/components/SitePanel'
 import StatsBar from '@/components/StatsBar'
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'YOUR_MAPBOX_TOKEN_HERE'
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
+mapboxgl.accessToken = MAPBOX_TOKEN
 
 const SITES = getSites()
 const TENANTS = getTenants()
 
-// Build GeoJSON for sites
 function buildGeoJSON(sites: LanciumSite[], selectedId: string | null) {
   return {
     type: 'FeatureCollection' as const,
@@ -22,13 +22,9 @@ function buildGeoJSON(sites: LanciumSite[], selectedId: string | null) {
       const topTenant = tenants.find(t => t.tenant_status === 'active') ||
                         tenants.find(t => t.tenant_status === 'probable') ||
                         tenants[0]
-
       return {
         type: 'Feature' as const,
-        geometry: {
-          type: 'Point' as const,
-          coordinates: [site.lon, site.lat],
-        },
+        geometry: { type: 'Point' as const, coordinates: [site.lon, site.lat] },
         properties: {
           site_id: site.site_id,
           site_name: site.site_name,
@@ -59,20 +55,14 @@ export default function Home() {
     if (site) setSelectedSite(site)
   }, [])
 
-  const handleClose = useCallback(() => {
-    setSelectedSite(null)
-  }, [])
+  const handleClose = useCallback(() => setSelectedSite(null), [])
 
-  // Keyboard handler
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose()
-    }
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [handleClose])
 
-  // Initialize map
   useEffect(() => {
     if (!mapContainer.current || map.current) return
 
@@ -89,7 +79,6 @@ export default function Home() {
     map.current.on('load', () => {
       const m = map.current!
 
-      // Custom dark style overrides via fog
       m.setFog({
         color: 'rgb(10, 15, 30)',
         'high-color': 'rgb(10, 15, 30)',
@@ -98,30 +87,23 @@ export default function Home() {
         'star-intensity': 0.6,
       })
 
-      // Add sites source
       m.addSource('lancium-sites', {
         type: 'geojson',
         data: buildGeoJSON(SITES, null),
       })
 
-      // Outer glow rings (pulsing for operational)
       m.addLayer({
         id: 'site-glow',
         type: 'circle',
         source: 'lancium-sites',
         paint: {
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            4, ['case', ['==', ['get', 'site_status'], 'operational'], 20, 14],
-            10, ['case', ['==', ['get', 'site_status'], 'operational'], 40, 28],
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 20, 10, 40],
           'circle-color': ['get', 'status_color'],
           'circle-opacity': 0.08,
           'circle-blur': 1,
         }
       })
 
-      // Size scaled to planned MW
       m.addLayer({
         id: 'site-circles',
         type: 'circle',
@@ -129,33 +111,17 @@ export default function Home() {
         paint: {
           'circle-radius': [
             'interpolate', ['linear'], ['zoom'],
-            4, [
-              'interpolate', ['linear'], ['get', 'planned_mw'],
-              0, 4,
-              1200, 12,
-            ],
-            10, [
-              'interpolate', ['linear'], ['get', 'planned_mw'],
-              0, 8,
-              1200, 24,
-            ],
+            4, ['interpolate', ['linear'], ['get', 'planned_mw'], 0, 4, 1200, 12],
+            10, ['interpolate', ['linear'], ['get', 'planned_mw'], 0, 8, 1200, 24],
           ],
           'circle-color': ['get', 'status_color'],
-          'circle-opacity': [
-            'case',
-            ['==', ['get', 'site_status'], 'unknown'], 0.3,
-            ['==', ['get', 'site_status'], 'in_development'], 0.7,
-            1.0
-          ],
-          'circle-stroke-width': [
-            'case', ['==', ['get', 'site_id'], selectedSite?.site_id || ''], 3, 1
-          ],
+          'circle-opacity': ['case', ['==', ['get', 'site_status'], 'unknown'], 0.3, ['==', ['get', 'site_status'], 'in_development'], 0.7, 1.0],
+          'circle-stroke-width': 1,
           'circle-stroke-color': '#ffffff',
           'circle-stroke-opacity': 0.3,
         }
       })
 
-      // ERCOT ring — shows approved MW
       m.addLayer({
         id: 'ercot-ring',
         type: 'circle',
@@ -164,16 +130,8 @@ export default function Home() {
         paint: {
           'circle-radius': [
             'interpolate', ['linear'], ['zoom'],
-            4, [
-              'interpolate', ['linear'], ['get', 'ercot_mw'],
-              0, 6,
-              1200, 18,
-            ],
-            10, [
-              'interpolate', ['linear'], ['get', 'ercot_mw'],
-              0, 14,
-              1200, 36,
-            ],
+            4, ['interpolate', ['linear'], ['get', 'ercot_mw'], 0, 6, 1200, 18],
+            10, ['interpolate', ['linear'], ['get', 'ercot_mw'], 0, 14, 1200, 36],
           ],
           'circle-color': 'transparent',
           'circle-stroke-width': 1,
@@ -183,61 +141,35 @@ export default function Home() {
         }
       })
 
-      // Labels
       m.addLayer({
         id: 'site-labels',
         type: 'symbol',
         source: 'lancium-sites',
         layout: {
-          'text-field': [
-            'concat',
-            ['get', 'site_name'],
-            '\n',
-            ['case',
-              ['>', ['get', 'planned_mw'], 0],
-              ['concat', ['to-string', ['get', 'planned_mw']], ' MW'],
-              '?? MW'
-            ]
-          ],
-          'text-font': ['IBM Plex Mono Medium', 'DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          'text-size': [
-            'interpolate', ['linear'], ['zoom'],
-            4, 9,
-            10, 11,
-          ],
+          'text-field': ['concat', ['get', 'site_name'], '\n', ['case', ['>', ['get', 'planned_mw'], 0], ['concat', ['to-string', ['get', 'planned_mw']], ' MW'], '?? MW']],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 4, 9, 10, 11],
           'text-offset': [0, 1.8],
           'text-anchor': 'top',
           'text-max-width': 12,
         },
         paint: {
-          'text-color': [
-            'case',
-            ['==', ['get', 'site_status'], 'operational'], '#E8FF47',
-            ['==', ['get', 'site_status'], 'in_development'], '#60A5FA',
-            '#6B7280'
-          ],
+          'text-color': ['case', ['==', ['get', 'site_status'], 'operational'], '#E8FF47', ['==', ['get', 'site_status'], 'in_development'], '#60A5FA', '#6B7280'],
           'text-opacity': 0.9,
           'text-halo-color': '#0A0F1E',
           'text-halo-width': 2,
         }
       })
 
-      // Click handler
-      m.on('click', 'site-circles', (e) => {
+      m.on('click', 'site-circles', (e: any) => {
         if (!e.features?.[0]) return
         const siteId = e.features[0].properties?.site_id
         if (siteId) handleSiteClick(siteId)
       })
 
-      m.on('mouseenter', 'site-circles', () => {
-        m.getCanvas().style.cursor = 'pointer'
-      })
-      m.on('mouseleave', 'site-circles', () => {
-        m.getCanvas().style.cursor = ''
-      })
-
-      // Click away to close
-      m.on('click', (e) => {
+      m.on('mouseenter', 'site-circles', () => { m.getCanvas().style.cursor = 'pointer' })
+      m.on('mouseleave', 'site-circles', () => { m.getCanvas().style.cursor = '' })
+      m.on('click', (e: any) => {
         const features = m.queryRenderedFeatures(e.point, { layers: ['site-circles'] })
         if (!features.length) setSelectedSite(null)
       })
@@ -245,34 +177,20 @@ export default function Home() {
       setMapLoaded(true)
     })
 
-    return () => {
-      map.current?.remove()
-      map.current = null
-    }
+    return () => { map.current?.remove(); map.current = null }
   }, [handleSiteClick])
 
-  // Update selected state on map
   useEffect(() => {
     if (!map.current || !mapLoaded) return
     const source = map.current.getSource('lancium-sites') as mapboxgl.GeoJSONSource
-    if (source) {
-      source.setData(buildGeoJSON(SITES, selectedSite?.site_id || null))
-    }
-
-    // Update stroke on circles
+    if (source) source.setData(buildGeoJSON(SITES, selectedSite?.site_id || null))
     if (map.current.getLayer('site-circles')) {
-      map.current.setPaintProperty('site-circles', 'circle-stroke-width', [
-        'case', ['==', ['get', 'site_id'], selectedSite?.site_id || ''], 3, 1
-      ])
-      map.current.setPaintProperty('site-circles', 'circle-stroke-opacity', [
-        'case', ['==', ['get', 'site_id'], selectedSite?.site_id || ''], 0.9, 0.3
-      ])
+      map.current.setPaintProperty('site-circles', 'circle-stroke-width', ['case', ['==', ['get', 'site_id'], selectedSite?.site_id || ''], 3, 1])
+      map.current.setPaintProperty('site-circles', 'circle-stroke-opacity', ['case', ['==', ['get', 'site_id'], selectedSite?.site_id || ''], 0.9, 0.3])
     }
   }, [selectedSite, mapLoaded])
 
-  const selectedTenants = selectedSite
-    ? getTenantsForSite(selectedSite.site_id)
-    : []
+  const selectedTenants = selectedSite ? getTenantsForSite(selectedSite.site_id) : []
 
   return (
     <>
@@ -280,36 +198,15 @@ export default function Home() {
         <title>Time-To-Energize | Lancium Clean Campus Intelligence</title>
         <meta name="description" content="Track Lancium Clean Campus sites, ERCOT queue positions, and tenant pipelines across West Texas" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="relative w-full h-screen overflow-hidden grid-texture">
-        {/* Map */}
-        <div ref={mapContainer} className="absolute inset-0" />
-
-        {/* Header */}
+      <main style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#0A0F1E', backgroundImage: 'linear-gradient(rgba(30,45,80,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(30,45,80,0.3) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+        <div ref={mapContainer} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" }} />
         <Header selectedSiteId={selectedSite?.site_id || null} />
-
-        {/* Site panel */}
-        {selectedSite && (
-          <SitePanel
-            site={selectedSite}
-            tenants={selectedTenants}
-            onClose={handleClose}
-          />
-        )}
-
-        {/* Stats bar */}
-        {!selectedSite && (
-          <StatsBar sites={SITES} tenants={TENANTS} />
-        )}
-
-        {/* Click hint */}
+        {selectedSite && <SitePanel site={selectedSite} tenants={selectedTenants} onClose={handleClose} />}
+        {!selectedSite && <StatsBar sites={SITES} tenants={TENANTS} />}
         {!selectedSite && (
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-            <div className="font-mono text-xs text-gray-600 tracking-widest text-center">
-              CLICK A SITE TO EXPLORE
-            </div>
+            <div className="font-mono text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>
           </div>
         )}
       </main>
