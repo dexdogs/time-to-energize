@@ -1,8 +1,7 @@
-import sitesData from '../../data/lancium_sites.json'
-import tenantsData from '../../data/lancium_tenants.json'
+import sitesData from '@data/lancium_sites.json'
+import tenantsData from '@data/lancium_tenants.json'
 import type { LanciumSite, LanciumTenant } from './types'
 
-// Flatten JSON structure to match flat interface
 export function getSites(): LanciumSite[] {
   return sitesData.sites.map((s: any) => ({
     site_id: s.site_id,
@@ -24,7 +23,7 @@ export function getSites(): LanciumSite[] {
     first_energization_date: s.timeline?.first_energization_date ?? null,
     time_to_energize_days: s.timeline?.time_to_energize_days ?? null,
     time_to_energize_confidence: s.timeline?.time_to_energize_confidence ?? 'missing',
-    behind_meter_bess_mw: s.power_infrastructure?.behind_meter_bess_mw ?? null,
+    behind_meter_bess_mw: s.power_infrastructure?.behind_meter_bess_mwh ?? null,
     behind_meter_solar_mw: s.power_infrastructure?.behind_meter_solar_mw ?? null,
     gas_turbine_bridge_mw: s.power_infrastructure?.gas_turbine_bridge_mw ?? null,
     primary_tsp: s.power_infrastructure?.primary_tsp ?? null,
