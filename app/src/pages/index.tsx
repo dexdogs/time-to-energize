@@ -210,7 +210,7 @@ export default function Home() {
         <InfoPanel />
         {!selectedSite && (
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-            <div className="font-mono text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>
+            <div className="font-sans text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>
           </div>
         )}
       </main>

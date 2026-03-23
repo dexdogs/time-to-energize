@@ -36,13 +36,13 @@ export default function StatsBar({ sites, tenants }: StatsBarProps) {
           <div key={stat.label}
             className={`flex flex-col justify-center px-5 py-3 shrink-0 ${i > 0 ? 'border-l border-grid-border' : ''}`}
             style={{ minWidth: '120px' }}>
-            <div className="font-mono text-lg font-bold leading-none mb-1"
+            <div className="font-sans text-lg font-bold leading-none mb-1"
               style={{ color: stat.color, textShadow: `0 0 10px ${stat.color}50` }}>
               {stat.value}
             </div>
-            <div className="font-mono text-xs text-gray-500 leading-tight">{stat.label}</div>
+            <div className="font-sans text-xs text-gray-500 leading-tight">{stat.label}</div>
             {stat.sub && (
-              <div className="font-mono text-xs mt-0.5" style={{ color: stat.color, opacity: 0.6, fontSize: '9px' }}>
+              <div className="font-sans text-xs mt-0.5" style={{ color: stat.color, opacity: 0.6, fontSize: '9px' }}>
                 {stat.sub}
               </div>
             )}

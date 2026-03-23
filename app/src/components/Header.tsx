@@ -18,10 +18,10 @@ export default function Header({ selectedSiteId }: HeaderProps) {
             </div>
           </div>
           <div>
-            <div className="font-mono text-sm font-bold tracking-widest" style={{ color: '#E8FF47', textShadow: '0 0 20px rgba(232,255,71,0.5)' }}>
+            <div className="font-sans text-sm font-bold tracking-widest" style={{ color: '#E8FF47', textShadow: '0 0 20px rgba(232,255,71,0.5)' }}>
               TIME-TO-ENERGIZE
             </div>
-            <div className="font-mono text-xs tracking-wider text-gray-500">
+            <div className="font-sans text-xs tracking-wider text-gray-500">
               LANCIUM CLEAN CAMPUS INTELLIGENCE // DEXDOGS
             </div>
           </div>
@@ -37,7 +37,7 @@ export default function Header({ selectedSiteId }: HeaderProps) {
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full" style={{ background: color, boxShadow: color !== '#4B5563' ? `0 0 6px ${color}` : 'none' }} />
-              <span className="text-gray-400 font-mono text-xs tracking-wider">{label}</span>
+              <span className="text-gray-400 font-sans text-xs tracking-wider">{label}</span>
             </div>
           ))}
         </div>
@@ -49,13 +49,13 @@ export default function Header({ selectedSiteId }: HeaderProps) {
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-sm" style={{ background: color }} />
-              <span className="font-mono text-xs" style={{ color }}>{label}</span>
+              <span className="font-sans text-xs" style={{ color }}>{label}</span>
             </div>
           ))}
         </div>
         <div className="flex items-center gap-2 border border-gray-700 rounded px-3 py-1.5" style={{ background: 'rgba(232,255,71,0.05)' }}>
           <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#E8FF47' }} />
-          <span className="font-mono text-xs" style={{ color: '#E8FF47' }}>ERCOT LIVE</span>
+          <span className="font-sans text-xs" style={{ color: '#E8FF47' }}>ERCOT LIVE</span>
         </div>
       </div>
     </header>
