@@ -74,6 +74,8 @@ export default function Header({ selectedSiteId }: HeaderProps) {
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
         WebkitOverflowScrolling: 'touch',
+        WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)',
+        maskImage: 'linear-gradient(to right, black 85%, transparent 100%)',
       } as React.CSSProperties}>
         {[
           { color: '#E8FF47', label: 'OPERATIONAL' },

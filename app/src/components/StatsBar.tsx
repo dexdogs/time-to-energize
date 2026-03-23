@@ -27,13 +27,13 @@ export default function StatsBar({ sites, tenants }: StatsBarProps) {
 
   return (
     <div style={{
-      position: 'absolute',
+      position: 'fixed',
       bottom: 0,
       left: 0,
       right: 0,
       zIndex: 20,
-      background: 'linear-gradient(0deg, rgba(10,15,30,0.98) 0%, rgba(10,15,30,0) 100%)',
-      paddingTop: '40px',
+      background: 'linear-gradient(0deg, rgba(10,15,30,1) 60%, rgba(10,15,30,0) 100%)',
+      paddingTop: '30px',
     }}>
       <div style={{
         display: 'flex',
@@ -42,27 +42,28 @@ export default function StatsBar({ sites, tenants }: StatsBarProps) {
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
-      }}>
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+      } as React.CSSProperties}>
         {stats.map((stat, i) => (
           <div key={stat.label} style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            padding: '10px 16px',
+            padding: '8px 14px',
             flexShrink: 0,
-            minWidth: '90px',
+            minWidth: '80px',
             borderLeft: i > 0 ? '1px solid #1E2D50' : 'none',
           }}>
             <div style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: '16px',
+              fontSize: '15px',
               fontWeight: 700,
               lineHeight: 1,
               marginBottom: '3px',
               color: stat.color,
               textShadow: `0 0 10px ${stat.color}50`,
             }}>{stat.value}</div>
-            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '9px', color: '#6B7280', letterSpacing: '0.08em' }}>{stat.label}</div>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '8px', color: '#6B7280', letterSpacing: '0.06em' }}>{stat.label}</div>
             {stat.sub && <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '8px', color: stat.color, opacity: 0.6, marginTop: '1px' }}>{stat.sub}</div>}
           </div>
         ))}

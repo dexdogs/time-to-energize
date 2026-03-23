@@ -161,6 +161,7 @@ function PanelContent({ site, tenants, onClose, statusColor }: { site: LanciumSi
             <ConfidenceBadge level={site.data_confidence} />
           </div>
           <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '15px', fontWeight: 700, color: '#fff' }}>{site.site_name}</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '10px', color: '#374151', marginTop: '1px', letterSpacing: '0.06em' }}>{site.site_id}</div>
           <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '11px', color: '#6B7280', marginTop: '2px' }}>{site.location_city}, {site.location_county} County, TX</div>
         </div>
         <button onClick={onClose} style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '11px', color: '#6B7280', background: 'transparent', border: '1px solid #1E2D50', borderRadius: '3px', padding: '4px 8px', cursor: 'pointer' }}>[×]</button>
