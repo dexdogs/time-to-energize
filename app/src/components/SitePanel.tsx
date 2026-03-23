@@ -107,7 +107,7 @@ function TenantCard({ tenant }: { tenant: LanciumTenant }) {
 
 export default function SitePanel({ site, tenants, onClose }: SitePanelProps) {
   const statusColor = STATUS_COLORS[site.site_status]
-  const HEADER_HEIGHT = 64
+  const HEADER_HEIGHT = 80
 
   return (
     <>
