@@ -18,34 +18,52 @@ export default function StatsBar({ sites, tenants }: StatsBarProps) {
     { label: 'TOTAL PLANNED', value: `${(totalPlanned / 1000).toFixed(1)} GW`, color: '#E8FF47' },
     { label: 'LIVE TODAY', value: `${totalOperational} MW`, color: '#22C55E' },
     { label: 'ERCOT APPROVED', value: `${(totalERCOT / 1000).toFixed(1)} GW`, color: '#3B82F6' },
-    { label: 'CAPITAL COMMITTED', value: `$${totalInvestment.toFixed(0)}B+`, color: '#A855F7' },
+    { label: 'CAPITAL', value: `$${totalInvestment.toFixed(0)}B+`, color: '#A855F7' },
     { label: 'ACTIVE TENANTS', value: String(activeTenants), color: '#22C55E' },
-    { label: 'TIME-TO-ENERGIZE', value: abilene?.time_to_energize_days ? `${abilene.time_to_energize_days}d` : '—', color: '#E8FF47', sub: 'LNC-002 ABILENE' },
-    { label: 'CLR PATENTS', value: 'LICENSED TO ERCOT', color: '#06B6D4', sub: 'APR 2025' },
-    { label: 'SITES TRACKED', value: String(sites.length), color: '#F59E0B' },
+    { label: 'TIME-TO-ENERGIZE', value: abilene?.time_to_energize_days ? `${abilene.time_to_energize_days}d` : '—', color: '#E8FF47', sub: 'ABILENE' },
+    { label: 'CLR PATENTS', value: 'ERCOT', color: '#06B6D4', sub: 'APR 2025' },
+    { label: 'SITES', value: String(sites.length), color: '#F59E0B' },
   ]
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-20"
-      style={{ 
-        background: 'linear-gradient(0deg, rgba(10,15,30,0.98) 0%, rgba(10,15,30,0) 100%)',
-        paddingTop: '40px'
+    <div style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: 20,
+      background: 'linear-gradient(0deg, rgba(10,15,30,0.98) 0%, rgba(10,15,30,0) 100%)',
+      paddingTop: '40px',
+    }}>
+      <div style={{
+        display: 'flex',
+        overflowX: 'auto',
+        borderTop: '1px solid #1E2D50',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}>
-      <div className="flex items-stretch border-t border-grid-border overflow-x-auto">
         {stats.map((stat, i) => (
-          <div key={stat.label}
-            className={`flex flex-col justify-center px-5 py-3 shrink-0 ${i > 0 ? 'border-l border-grid-border' : ''}`}
-            style={{ minWidth: '120px' }}>
-            <div className="font-sans text-lg font-bold leading-none mb-1"
-              style={{ color: stat.color, textShadow: `0 0 10px ${stat.color}50` }}>
-              {stat.value}
-            </div>
-            <div className="font-sans text-xs text-gray-500 leading-tight">{stat.label}</div>
-            {stat.sub && (
-              <div className="font-sans text-xs mt-0.5" style={{ color: stat.color, opacity: 0.6, fontSize: '9px' }}>
-                {stat.sub}
-              </div>
-            )}
+          <div key={stat.label} style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: '10px 16px',
+            flexShrink: 0,
+            minWidth: '90px',
+            borderLeft: i > 0 ? '1px solid #1E2D50' : 'none',
+          }}>
+            <div style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '16px',
+              fontWeight: 700,
+              lineHeight: 1,
+              marginBottom: '3px',
+              color: stat.color,
+              textShadow: `0 0 10px ${stat.color}50`,
+            }}>{stat.value}</div>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '9px', color: '#6B7280', letterSpacing: '0.08em' }}>{stat.label}</div>
+            {stat.sub && <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '8px', color: stat.color, opacity: 0.6, marginTop: '1px' }}>{stat.sub}</div>}
           </div>
         ))}
       </div>

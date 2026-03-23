@@ -5,8 +5,7 @@ import { getSites, getTenants, getTenantsForSite } from '@/lib/data'
 import { STATUS_COLORS, TENANT_STATUS_COLORS } from '@/lib/types'
 import type { LanciumSite, LanciumTenant } from '@/lib/types'
 import Header from '@/components/Header'
-import ExportButton from '@/components/ExportButton'
-import InfoPanel from '@/components/InfoPanel'
+import ButtonBar from '@/components/ButtonBar'
 import SitePanel from '@/components/SitePanel'
 import StatsBar from '@/components/StatsBar'
 
@@ -205,9 +204,9 @@ export default function Home() {
         <div ref={mapContainer} style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" }} />
         <Header selectedSiteId={selectedSite?.site_id || null} />
         {selectedSite && <SitePanel site={selectedSite} tenants={selectedTenants} onClose={handleClose} />}
-        {!selectedSite && <StatsBar sites={SITES} tenants={TENANTS} />}
-        <ExportButton />
-        <InfoPanel />
+        <StatsBar sites={SITES} tenants={TENANTS} />
+        <ButtonBar />
+        
         {!selectedSite && (
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
             <div className="font-sans text-xs text-gray-600 tracking-widest text-center">CLICK A SITE TO EXPLORE</div>
