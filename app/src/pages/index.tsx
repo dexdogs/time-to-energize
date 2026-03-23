@@ -391,6 +391,114 @@ export default function Home() {
       })
 
       // ── END TIER 1 GIS LAYERS ───────────────────────────────────────
+      // ── TIER 3 GIS LAYERS ──────────────────────────────────────────
+      // Atmospheric depth. Static, non-interactive.
+
+      // 1. Major electric substations - West Texas
+      // Source: HIFLD approximation - key 345kV substations
+      m.addSource('substations', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            { type: 'Feature', properties: { name: 'Abilene', kv: 345 }, geometry: { type: 'Point', coordinates: [-99.78, 32.50] }},
+            { type: 'Feature', properties: { name: 'Tuco', kv: 345 }, geometry: { type: 'Point', coordinates: [-102.05, 33.82] }},
+            { type: 'Feature', properties: { name: 'Lubbock', kv: 345 }, geometry: { type: 'Point', coordinates: [-101.85, 33.55] }},
+            { type: 'Feature', properties: { name: 'Childress', kv: 138 }, geometry: { type: 'Point', coordinates: [-100.10, 34.36] }},
+            { type: 'Feature', properties: { name: 'Amarillo', kv: 345 }, geometry: { type: 'Point', coordinates: [-101.83, 35.22] }},
+            { type: 'Feature', properties: { name: 'Odessa', kv: 345 }, geometry: { type: 'Point', coordinates: [-102.37, 31.85] }},
+            { type: 'Feature', properties: { name: 'Midland', kv: 345 }, geometry: { type: 'Point', coordinates: [-102.07, 31.99] }},
+            { type: 'Feature', properties: { name: 'Fort Stockton', kv: 138 }, geometry: { type: 'Point', coordinates: [-102.88, 30.89] }},
+            { type: 'Feature', properties: { name: 'San Angelo', kv: 138 }, geometry: { type: 'Point', coordinates: [-100.43, 31.46] }},
+            { type: 'Feature', properties: { name: 'Sweetwater', kv: 345 }, geometry: { type: 'Point', coordinates: [-100.40, 32.47] }},
+            { type: 'Feature', properties: { name: 'Wichita Falls', kv: 345 }, geometry: { type: 'Point', coordinates: [-98.49, 33.91] }},
+            { type: 'Feature', properties: { name: 'Comanche', kv: 138 }, geometry: { type: 'Point', coordinates: [-98.60, 31.90] }},
+          ]
+        }
+      })
+
+      m.addLayer({
+        id: 'substations-dots',
+        type: 'circle',
+        source: 'substations',
+        paint: {
+          'circle-radius': [
+            'interpolate', ['linear'], ['zoom'],
+            4, ['match', ['get', 'kv'], 345, 2.5, 1.5],
+            10, ['match', ['get', 'kv'], 345, 5, 3],
+          ],
+          'circle-color': '#F59E0B',
+          'circle-opacity': 0.2,
+          'circle-stroke-width': 0.5,
+          'circle-stroke-color': '#F59E0B',
+          'circle-stroke-opacity': 0.3,
+        }
+      })
+
+      m.addLayer({
+        id: 'substations-labels',
+        type: 'symbol',
+        source: 'substations',
+        minzoom: 7,
+        layout: {
+          'text-field': ['get', 'name'],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+          'text-size': 8,
+          'text-anchor': 'top',
+          'text-offset': [0, 0.6],
+        },
+        paint: {
+          'text-color': '#92400E',
+          'text-opacity': 0.5,
+        }
+      })
+
+      // 2. Railroad network - West Texas main lines
+      // Source: approximate centerlines of BNSF/UP main lines
+      m.addSource('railroads', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            // BNSF Transcon (I-20 corridor) - major E-W line through Abilene
+            { type: 'Feature', properties: { operator: 'BNSF' },
+              geometry: { type: 'LineString', coordinates: [
+                [-106.5, 31.8], [-105.0, 31.8], [-103.5, 31.9],
+                [-102.0, 32.3], [-100.9, 32.5], [-99.8, 32.47],
+                [-98.5, 32.3], [-97.2, 32.7], [-96.8, 32.8]
+              ]}},
+            // UP north line through Lubbock/Childress area
+            { type: 'Feature', properties: { operator: 'UP' },
+              geometry: { type: 'LineString', coordinates: [
+                [-103.5, 34.0], [-102.5, 34.1], [-101.5, 34.0],
+                [-100.6, 34.1], [-100.1, 34.36], [-99.5, 34.5],
+                [-98.5, 34.5], [-97.5, 34.1]
+              ]}},
+            // N-S line through West TX
+            { type: 'Feature', properties: { operator: 'UP' },
+              geometry: { type: 'LineString', coordinates: [
+                [-102.0, 35.5], [-102.0, 34.5], [-102.0, 33.5],
+                [-102.0, 32.3], [-102.0, 31.2], [-102.0, 30.0]
+              ]}},
+          ]
+        }
+      })
+
+      m.addLayer({
+        id: 'railroads-lines',
+        type: 'line',
+        source: 'railroads',
+        paint: {
+          'line-color': '#4B5563',
+          'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.5, 10, 1.5],
+          'line-opacity': 0.25,
+          'line-dasharray': [2, 1],
+        }
+      })
+
+      // ── END TIER 3 GIS LAYERS ───────────────────────────────────────
+
+
 
       // Childress campus polygon - 34.357136, -100.098100
       // 3000 acres ~12km2, ~4.5km E-W x 2.7km N-S
