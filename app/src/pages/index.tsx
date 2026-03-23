@@ -132,6 +132,49 @@ export default function Home() {
         }
       })
 
+
+      // Childress campus polygon - 34.357136, -100.098100
+      // 3000 acres ~12km2, ~4.5km E-W x 2.7km N-S
+      m.addSource('childress-polygon', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-100.1226, 34.3693],
+              [-99.9736, 34.3693],
+              [-99.9736, 34.3450],
+              [-100.1226, 34.3450],
+              [-100.1226, 34.3693],
+            ]]
+          },
+          properties: { site_id: 'LNC-003', name: 'Childress Clean Campus' }
+        }
+      })
+
+      m.addLayer({
+        id: 'childress-polygon-fill',
+        type: 'fill',
+        source: 'childress-polygon',
+        paint: {
+          'fill-color': '#3B82F6',
+          'fill-opacity': 0.06,
+        }
+      })
+
+      m.addLayer({
+        id: 'childress-polygon-border',
+        type: 'line',
+        source: 'childress-polygon',
+        paint: {
+          'line-color': '#3B82F6',
+          'line-width': 1.5,
+          'line-opacity': 0.5,
+          'line-dasharray': [3, 2],
+        }
+      })
+
       m.addSource('lancium-sites', {
         type: 'geojson',
         data: buildGeoJSON(SITES, null),
