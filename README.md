@@ -1,6 +1,6 @@
 # ⚡ TIME-TO-ENERGIZE
 ### Lancium Clean Campus Intelligence Platform
-**by [dexdogs](https://github.com/dexdogs)**
+**by [dexdogs](dexdogs.earth)**
 
 > Track every Lancium Clean Campus site across West Texas — ERCOT queue positions, tenant pipelines, time-to-energize metrics, and the speculative hyperscaler landscape.
 
